@@ -14,7 +14,7 @@
     "start": "bun src/cli.ts"
   },
   "dependencies": {
-    "@accesslint/core": "file:../core"
+    "@accesslint/core": "^0.8.4"
   },
   "devDependencies": {
     "citty": "^0.1.6",
