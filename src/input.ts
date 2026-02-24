@@ -4,7 +4,13 @@ export async function resolveInput(source?: string): Promise<string> {
   // Explicit source: file or URL
   if (source) {
     if (/^https?:\/\//i.test(source)) {
-      const res = await fetch(source);
+      let res: Response;
+      try {
+        res = await fetch(source);
+      } catch (err: unknown) {
+        const cause = err instanceof Error && err.cause instanceof Error ? err.cause.message : (err instanceof Error ? err.message : String(err));
+        throw new Error(`Failed to fetch ${source}: ${cause}`);
+      }
       if (!res.ok) {
         throw new Error(`Failed to fetch ${source}: ${res.status} ${res.statusText}`);
       }
