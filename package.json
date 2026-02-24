@@ -4,18 +4,21 @@
   "description": "CLI tool for auditing HTML accessibility using @accesslint/core",
   "type": "module",
   "bin": {
-    "accesslint": "./src/cli.ts"
+    "accesslint": "./dist/cli.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "bun build src/cli.ts --target=node --outdir=dist",
     "start": "bun src/cli.ts"
   },
   "dependencies": {
-    "@accesslint/core": "file:../core",
-    "citty": "^0.1.6",
-    "happy-dom": "^20.4.0"
+    "@accesslint/core": "file:../core"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.0",
+    "citty": "^0.1.6",
+    "happy-dom": "^20.4.0",
     "typescript": "^5.7.0"
   },
   "license": "MIT"

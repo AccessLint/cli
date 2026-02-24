@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+
 export async function resolveInput(source?: string): Promise<string> {
   // Explicit source: file or URL
   if (source) {
@@ -8,12 +10,16 @@ export async function resolveInput(source?: string): Promise<string> {
       }
       return res.text();
     }
-    return Bun.file(source).text();
+    return readFile(source, "utf-8");
   }
 
   // Piped stdin
   if (!process.stdin.isTTY) {
-    return Bun.stdin.text();
+    const chunks: Buffer[] = [];
+    for await (const chunk of process.stdin) {
+      chunks.push(chunk);
+    }
+    return Buffer.concat(chunks).toString("utf-8");
   }
 
   throw new Error(
