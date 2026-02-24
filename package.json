@@ -1,6 +1,6 @@
 {
   "name": "@accesslint/cli",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/AccessLint/cli"
@@ -14,15 +14,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "bun build src/cli.ts --target=node --outdir=dist",
+    "build": "bun build src/cli.ts --target=node --outdir=dist --external jsdom",
     "start": "bun src/cli.ts"
   },
   "dependencies": {
-    "@accesslint/core": "^0.8.7"
+    "@accesslint/core": "^0.8.7",
+    "jsdom": "^26.0.0"
   },
   "devDependencies": {
     "citty": "^0.1.6",
-    "jsdom": "^26.0.0",
     "typescript": "^5.7.0"
   },
   "license": "MIT"
