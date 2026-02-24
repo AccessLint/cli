@@ -1,4 +1,7 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
+import { resolve } from "node:path";
+import { inlineCSS } from "./inline-css.js";
 
 export async function resolveInput(source?: string): Promise<string> {
   // Explicit source: file or URL
@@ -14,9 +17,12 @@ export async function resolveInput(source?: string): Promise<string> {
       if (!res.ok) {
         throw new Error(`Failed to fetch ${source}: ${res.status} ${res.statusText}`);
       }
-      return res.text();
+      const html = await res.text();
+      return inlineCSS(html, source);
     }
-    return readFile(source, "utf-8");
+    const html = await readFile(source, "utf-8");
+    const baseURL = pathToFileURL(resolve(source)).href;
+    return inlineCSS(html, baseURL);
   }
 
   // Piped stdin
