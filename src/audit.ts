@@ -1,4 +1,4 @@
-import { GlobalWindow } from "happy-dom";
+import { JSDOM, VirtualConsole } from "jsdom";
 import {
   runAudit,
   configureRules,
@@ -14,14 +14,15 @@ export interface AuditOptions {
 
 let globalsRegistered = false;
 
-function ensureGlobals(window: GlobalWindow): void {
+function ensureGlobals(window: typeof globalThis): void {
   if (globalsRegistered) return;
   for (const key of Object.getOwnPropertyNames(window)) {
-    if (!(key in globalThis)) {
-      try {
-        (globalThis as any)[key] = (window as any)[key];
-      } catch {}
-    }
+    if (key in globalThis) continue;
+    const desc = Object.getOwnPropertyDescriptor(window, key);
+    if (!desc || typeof desc.value !== "function") continue;
+    try {
+      (globalThis as any)[key] = desc.value;
+    } catch {}
   }
   globalsRegistered = true;
 }
@@ -33,17 +34,15 @@ export function audit(html: string, options: AuditOptions = {}): AuditResult {
   if (options.disabledRules?.length) config.disabledRules = options.disabledRules;
   configureRules(config);
 
-  const window = new GlobalWindow();
-  ensureGlobals(window);
+  const virtualConsole = new VirtualConsole();
+  const dom = new JSDOM(html, { pretendToBeVisual: true, virtualConsole });
+  ensureGlobals(dom.window as unknown as typeof globalThis);
 
-  const parser = new window.DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-
-  const result = runAudit(doc as unknown as Document);
+  const result = runAudit(dom.window.document as unknown as Document);
 
   // Strip non-serializable element references
   result.violations = result.violations.map(({ element, ...rest }) => rest);
 
-  window.close();
+  dom.window.close();
   return result;
 }
