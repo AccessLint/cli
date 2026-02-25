@@ -25,11 +25,11 @@ function ensureGlobals(window) {
   globalsRegistered = true;
 }
 function audit(html, options = {}) {
-  const config = {};
+  const config = {
+    componentMode: options.componentMode ?? false
+  };
   if (options.includeAAA)
     config.includeAAA = true;
-  if (options.componentMode)
-    config.componentMode = true;
   if (options.disabledRules?.length)
     config.disabledRules = options.disabledRules;
   configureRules(config);
