@@ -38,7 +38,7 @@ function ensureGlobals(window: typeof globalThis): void {
 
 export function audit(html: string, options: AuditOptions = {}): AuditResult {
   const config: ConfigureOptions = {
-    componentMode: options.componentMode ?? false,
+    componentMode: options.componentMode ?? isHTMLFragment(html),
   };
   if (options.includeAAA) config.includeAAA = true;
   if (options.disabledRules?.length) config.disabledRules = options.disabledRules;

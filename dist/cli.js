@@ -7766,11 +7766,11 @@ function ensureGlobals(window) {
   globalsRegistered = true;
 }
 function audit(html, options = {}) {
-  const config = {};
+  const config = {
+    componentMode: options.componentMode ?? isHTMLFragment(html)
+  };
   if (options.includeAAA)
     config.includeAAA = true;
-  if (options.componentMode)
-    config.componentMode = true;
   if (options.disabledRules?.length)
     config.disabledRules = options.disabledRules;
   Bn(config);
@@ -7868,7 +7868,6 @@ var main = defineCommand({
       const disabledRules = args.disable ? args.disable.split(",").map((s2) => s2.trim()) : undefined;
       const result = audit(html, {
         includeAAA: args["include-aaa"],
-        componentMode: isHTMLFragment(html),
         disabledRules
       });
       console.log(format(result, args.format));

@@ -26,7 +26,7 @@ function ensureGlobals(window) {
 }
 function audit(html, options = {}) {
   const config = {
-    componentMode: options.componentMode ?? false
+    componentMode: options.componentMode ?? isHTMLFragment(html)
   };
   if (options.includeAAA)
     config.includeAAA = true;
