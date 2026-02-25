@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { defineCommand, runMain } from "citty";
 import { resolveInput } from "./input.js";
-import { audit } from "./audit.js";
+import { audit, isHTMLFragment } from "./audit.js";
 import { format } from "./format.js";
 
 const main = defineCommand({
@@ -45,9 +45,11 @@ const main = defineCommand({
         ? args.disable.split(",").map((s: string) => s.trim())
         : undefined;
 
+      const componentMode = args["component-mode"] || isHTMLFragment(html);
+
       const result = audit(html, {
         includeAAA: args["include-aaa"],
-        componentMode: args["component-mode"],
+        componentMode,
         disabledRules,
       });
 

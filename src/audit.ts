@@ -12,6 +12,15 @@ export interface AuditOptions {
   disabledRules?: string[];
 }
 
+/**
+ * Returns true if the HTML looks like a fragment/component rather than a full
+ * document (i.e. it lacks a doctype or <html> tag).
+ */
+export function isHTMLFragment(html: string): boolean {
+  const prefix = html.slice(0, 1000);
+  return !(/<!doctype\s/i.test(prefix) || /<html[\s>]/i.test(prefix));
+}
+
 let globalsRegistered = false;
 
 function ensureGlobals(window: typeof globalThis): void {

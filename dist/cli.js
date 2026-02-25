@@ -7745,6 +7745,10 @@ function Gn(e2) {
 var jn = new Map(Ze.map((e2) => [e2.id, e2]));
 
 // src/audit.ts
+function isHTMLFragment(html) {
+  const prefix = html.slice(0, 1000);
+  return !(/<!doctype\s/i.test(prefix) || /<html[\s>]/i.test(prefix));
+}
 var globalsRegistered = false;
 function ensureGlobals(window) {
   if (globalsRegistered)
@@ -7867,9 +7871,10 @@ var main = defineCommand({
     try {
       const html = await resolveInput(args.source);
       const disabledRules = args.disable ? args.disable.split(",").map((s2) => s2.trim()) : undefined;
+      const componentMode = args["component-mode"] || isHTMLFragment(html);
       const result = audit(html, {
         includeAAA: args["include-aaa"],
-        componentMode: args["component-mode"],
+        componentMode,
         disabledRules
       });
       console.log(format(result, args.format));
