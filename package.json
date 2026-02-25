@@ -1,6 +1,6 @@
 {
   "name": "@accesslint/cli",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/AccessLint/cli"
@@ -22,7 +22,7 @@
     "start": "bun src/cli.ts"
   },
   "dependencies": {
-    "@accesslint/core": "^0.8.7",
+    "@accesslint/core": "^0.8.8",
     "jsdom": "^26.0.0"
   },
   "devDependencies": {
