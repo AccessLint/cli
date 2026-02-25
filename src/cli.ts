@@ -27,11 +27,6 @@ const main = defineCommand({
       description: "Include AAA-level rules",
       default: false,
     },
-    "component-mode": {
-      type: "boolean",
-      description: "Exclude page-level rules",
-      default: false,
-    },
     disable: {
       type: "string",
       alias: "d",
@@ -45,11 +40,9 @@ const main = defineCommand({
         ? args.disable.split(",").map((s: string) => s.trim())
         : undefined;
 
-      const componentMode = args["component-mode"] || isHTMLFragment(html);
-
       const result = audit(html, {
         includeAAA: args["include-aaa"],
-        componentMode,
+        componentMode: isHTMLFragment(html),
         disabledRules,
       });
 
