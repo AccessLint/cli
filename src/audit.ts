@@ -50,7 +50,7 @@ export function audit(html: string, options: AuditOptions = {}): AuditResult {
   const result = runAudit(dom.window.document as unknown as Document);
 
   // Strip non-serializable element references
-  result.violations = result.violations.map(({ element, ...rest }) => rest);
+  result.violations = result.violations.map(({ element: _el, ...rest }: any) => rest);
 
   dom.window.close();
   return result;

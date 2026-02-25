@@ -7778,7 +7778,7 @@ function audit(html, options = {}) {
   const dom = new JSDOM2(html, { pretendToBeVisual: true, virtualConsole });
   ensureGlobals(dom.window);
   const result = Gn(dom.window.document);
-  result.violations = result.violations.map(({ element, ...rest }) => rest);
+  result.violations = result.violations.map(({ element: _el, ...rest }) => rest);
   dom.window.close();
   return result;
 }
