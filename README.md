@@ -1,3 +1,5 @@
+> **This package is maintained in the [AccessLint monorepo](https://github.com/AccessLint/accesslint).**
+
 # @accesslint/cli
 
 CLI tool for auditing HTML accessibility using [@accesslint/core](https://github.com/AccessLint/core).
